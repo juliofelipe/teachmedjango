@@ -6,7 +6,7 @@ import Login from "./containers/Login";
 import Signup from "./containers/Signup";
 import Profile from "./containers/Profile";
 import AssignmentList from "./containers/AssignmentList";
-import AssignmentDetail from "./containers/AssignmentList";
+import AssignmentDetail from "./containers/AssignmentDetail";
 
 const BaseRouter = () => (
   <Hoc>

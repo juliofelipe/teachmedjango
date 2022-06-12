@@ -7,7 +7,6 @@ import Hoc from "../hoc/hoc";
 
 
 class AssignmentList extends React.PureComponent {
-
     componentDidMount() {
         if (this.props.token !== undefined && this.props.token !== null) {
         this.props.getASNTS(this.props.token);
@@ -24,7 +23,7 @@ class AssignmentList extends React.PureComponent {
 
     renderItem(item) {
         return (
-            <Link to="/assignments/1">
+            <Link to={`/assignments/${item.id}`}>
                 <List.Item>{item.title}</List.Item>
             </Link>
         )
