@@ -11,7 +11,7 @@ class Assignment(models.Model):
         return self.title
 
 
-class GradeAssignment(models.Model):
+class GradedAssignment(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     assignment = models.ForeignKey(
         Assignment, on_delete=models.SET_NULL, blank=True, null=True)
