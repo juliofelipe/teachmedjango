@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from "react-redux";
-import { Card } from 'antd';
+import { Card, Skeleton } from 'antd';
+import Questions from "./Questions";
 import { getASNTSDetail } from "../store/actions/assignments";
+import Hoc from "../hoc/hoc";
 
 class AssignmentDetail extends React.Component {
     componentDidMount() {
@@ -22,11 +24,30 @@ class AssignmentDetail extends React.Component {
         const { currentAssignment } = this.props;
         const { title } = currentAssignment;
         return (
-            <Card title={title}>
-                <Card type="inner" title="Inner Card title"> 
-                Inner Card content
-                </Card>
-            </Card>
+            <Hoc>
+            {Object.keys(currentAssignment).length > 0 ? (
+                <Hoc>
+                    {this.props.loading ? (
+                        <Skeleton active />
+                ) : (
+                    <Card title={title}>
+                        <Questions 
+                            questions={currentAssignment.questions.map(q => {
+                                return (
+                                <Card 
+                                type="inner" 
+                                key={q.id} 
+                                title={`${q.order}. ${q.question}`} 
+                                />
+                                )
+                            })}
+                            />
+                        </Card>
+                   
+                )}
+            </Hoc>
+            ) : null}
+           </Hoc>
         );
     }
 }

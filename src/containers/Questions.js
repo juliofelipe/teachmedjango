@@ -1,64 +1,54 @@
-import { Button, message, Steps } from 'antd';
-import React, { useState } from 'react';
-const { Step } = Steps;
-const steps = [
-  {
-    title: 'First',
-    content: 'First-content',
-  },
-  {
-    title: 'Second',
-    content: 'Second-content',
-  },
-  {
-    title: 'Last',
-    content: 'Last-content',
-  },
-];
+import React from "react";
+import { Steps, Button } from "antd";
 
-const App = () => {
-  const [current, setCurrent] = useState(0);
+const Step = Steps.Step;
 
-  const next = () => {
-    setCurrent(current + 1);
+class Questions extends React.Component {
+  state = {
+    current: 0
   };
 
-  const prev = () => {
-    setCurrent(current - 1);
-  };
+  next() {
+    const current = this.state.current + 1;
+    this.setState({ current });
+  }
 
-  return (
-    <>
-      <Steps current={current}>
-        {steps.map((item) => (
-          <Step key={item.title} title={item.title} />
-        ))}
-      </Steps>
-      <div className="steps-content">{steps[current].content}</div>
-      <div className="steps-action">
-        {current < steps.length - 1 && (
-          <Button type="primary" onClick={() => next()}>
-            Next
-          </Button>
-        )}
-        {current === steps.length - 1 && (
-          <Button type="primary" onClick={() => message.success('Processing complete!')}>
-            Done
-          </Button>
-        )}
-        {current > 0 && (
-          <Button
-            style={{
-              margin: '0 8px',
-            }}
-            onClick={() => prev()}
-          >
-            Previous
-          </Button>
-        )}
+  prev() {
+    const current = this.state.current - 1;
+    this.setState({ current });
+  }
+
+  render() {
+    const { current } = this.state;
+    const { questions } = this.props;
+    return (
+      <div>
+        <Steps progressDot current={current}>
+          {questions.map((q, index) => (
+            <Step key={index} />
+          ))}
+        </Steps>
+        <div>{questions[current]}</div>
+        <div>
+          {current < questions.length - 1 && (
+            <Button type="primary" onClick={() => this.next()}>
+              Next
+            </Button>
+          )}
+          {current === questions.length - 1 && (
+            <Button type="primary" onClick={() => this.props.submit()}>
+              Submit
+            </Button>
+          )}
+          {current > 0 && (
+            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
+              Previous
+            </Button>
+          )}
+        </div>
       </div>
-    </>
-  );
-};
+    );
+  }
+}
 
-export default App;
+export default Questions;
