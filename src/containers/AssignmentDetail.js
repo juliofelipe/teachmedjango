@@ -15,7 +15,7 @@ class AssignmentDetail extends React.Component {
     state = {
         usersAnswers: {}
       };
-      
+
     componentDidMount() {
         if (this.props.token !== undefined && this.props.token !== null) {
             this.props.getASNTSDetail(this.props.token, this.props.match.params.id);
@@ -28,6 +28,15 @@ class AssignmentDetail extends React.Component {
                 this.props.getASNTSDetail(newProps.token, this.props.match.params.id);
             }
         }
+    }
+
+    onChange = (e, qId) => {
+        console.log("radio checked", e.target.value);
+        const { usersAnswers } = this.state;
+        usersAnswers[qId] = e.target.value;
+        this.setState({
+           usersAnswers
+        })
     }
 
     render() {
