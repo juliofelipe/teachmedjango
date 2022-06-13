@@ -2,10 +2,20 @@ import React from 'react';
 import { connect } from "react-redux";
 import { Card, Skeleton } from 'antd';
 import Questions from "./Questions";
+import Choices from './components/Choices';
 import { getASNTSDetail } from "../store/actions/assignments";
 import Hoc from "../hoc/hoc";
 
+const cardStyle = {
+    marginTop: '20px',
+    marginBottom: '20px'
+}
+
 class AssignmentDetail extends React.Component {
+    state = {
+        usersAnswers: {}
+      };
+      
     componentDidMount() {
         if (this.props.token !== undefined && this.props.token !== null) {
             this.props.getASNTSDetail(this.props.token, this.props.match.params.id);
@@ -20,37 +30,47 @@ class AssignmentDetail extends React.Component {
         }
     }
 
-    render () {
+    render() {
         const { currentAssignment } = this.props;
         const { title } = currentAssignment;
+        const { usersAnswers } = this.state;
         return (
-            <Hoc>
+          <Hoc>
             {Object.keys(currentAssignment).length > 0 ? (
-                <Hoc>
-                    {this.props.loading ? (
-                        <Skeleton active />
+              <Hoc>
+                {this.props.loading ? (
+                  <Skeleton active />
                 ) : (
-                    <Card title={title}>
-                        <Questions 
-                            questions={currentAssignment.questions.map(q => {
-                                return (
-                                <Card 
-                                type="inner" 
-                                key={q.id} 
-                                title={`${q.order}. ${q.question}`} 
-                                />
-                                )
-                            })}
+                  <Card title={title}>
+                    <Questions
+                      submit={() => this.handleSubmit()}
+                      questions={currentAssignment.questions.map(q => {
+                        return (
+                          <Card
+                            style={cardStyle}
+                            type="inner"
+                            key={q.id}
+                            title={`${q.order}. ${q.question}`}
+                          >
+                            <Choices
+                              questionId={q.order}
+                              choices={q.choices}
+                              change={this.onChange}
+                              usersAnswers={usersAnswers}
                             />
-                        </Card>
-                   
+                          </Card>
+                        );
+                      })}
+                    />
+                  </Card>
                 )}
-            </Hoc>
+              </Hoc>
             ) : null}
-           </Hoc>
+          </Hoc>
         );
+      }
     }
-}
+    
 
 const mapStateToProps = state => {
     return {
