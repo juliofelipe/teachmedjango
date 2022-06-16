@@ -100,7 +100,8 @@ const mapStateToProps = state => {
     return {
         token: state.auth.token,
         currentAssignment: state.assignments.currentAssignment,
-        loading: state.assignments.loading
+        loading: state.assignments.loading,
+        username: state.auth.username
     };
 };
   
